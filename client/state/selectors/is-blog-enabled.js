@@ -13,5 +13,5 @@ import { get } from 'lodash';
  * @return {Boolean}         Whether or not blogging is "enabled".
  */
 export default function isBlogEnabled( state, siteId ) {
-	return get( state.siteSettings.items, [ siteId, 'blog_enabled' ], null );
+	return get( state.siteSettings.items, [ siteId, 'blog_enabled' ], true );
 }
