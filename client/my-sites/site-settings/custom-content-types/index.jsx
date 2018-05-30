@@ -61,7 +61,8 @@ class CustomContentTypes extends Component {
 
 	renderPostsPerPageField( fieldName, postTypeLabel ) {
 		const { fields, onChangeField, translate } = this.props;
-		const numberFieldName = fieldName === 'post' ? 'posts_per_page' : fieldName + '_posts_per_page';
+		const numberFieldName =
+			fieldName === 'blog_enabled' ? 'posts_per_page' : fieldName + '_posts_per_page';
 		const isDisabled = this.isFormPending() || ( ! fields[ fieldName ] && fieldName !== 'post' );
 
 		return (
@@ -93,17 +94,13 @@ class CustomContentTypes extends Component {
 		const { activatingCustomContentTypesModule, fields, handleAutosavingToggle } = this.props;
 		return (
 			<div className="custom-content-types__module-settings">
-				{ name !== 'post' ? (
-					<CompactFormToggle
-						checked={ !! fields[ name ] }
-						disabled={ this.isFormPending() || activatingCustomContentTypesModule }
-						onChange={ handleAutosavingToggle( name ) }
-					>
-						{ label }
-					</CompactFormToggle>
-				) : (
-					<div className="custom-content-types__label">{ label }</div>
-				) }
+				<CompactFormToggle
+					checked={ !! fields[ name ] }
+					disabled={ this.isFormPending() || activatingCustomContentTypesModule }
+					onChange={ handleAutosavingToggle( name ) }
+				>
+					{ label }
+				</CompactFormToggle>
 
 				{ this.renderPostsPerPageField( name, label ) }
 
@@ -115,11 +112,11 @@ class CustomContentTypes extends Component {
 	renderBlogPostSettings() {
 		const { translate } = this.props;
 		const fieldLabel = translate( 'Blog posts' );
-		const fieldDescription = translate( 'On blog pages, the number of posts to show per page.' );
+		const fieldDescription = translate( 'Add, organize, and display blog posts.' );
 
 		return (
 			<div className="custom-content-types__module-settings">
-				{ this.renderContentTypeSettings( 'post', fieldLabel, fieldDescription ) }
+				{ this.renderContentTypeSettings( 'blog_enabled', fieldLabel, fieldDescription ) }
 			</div>
 		);
 	}
