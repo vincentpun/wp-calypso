@@ -16,15 +16,18 @@ import Button from 'components/button';
 import { recordTracksEvent, recordGoogleEvent } from 'state/analytics/actions';
 import { applyCoupon, removeCoupon } from 'lib/upgrades/actions';
 
-export class CartCoupon extends React.Component {
+class CartCoupon extends React.Component {
 	static displayName = 'CartCoupon';
 
 	constructor( props ) {
 		super( props );
+		let coupon = props.cart.coupon,
+			cartHadCouponBeforeMount = Boolean( props.cart.coupon );
 
 		this.state = {
-			isCouponFormShowing: false,
-			couponInputValue: this.appliedCouponCode,
+			isCouponFormShowing: cartHadCouponBeforeMount,
+			hasSubmittedCoupon: cartHadCouponBeforeMount,
+			couponInputValue: coupon,
 			userChangedCoupon: false,
 		};
 	}
@@ -35,71 +38,73 @@ export class CartCoupon extends React.Component {
 		}
 	}
 
-	render() {
-		if ( this.appliedCouponCode ) {
-			return this.renderAppliedCoupon();
+	toggleCouponDetails = event => {
+		event.preventDefault();
+
+		this.setState( { isCouponFormShowing: ! this.state.isCouponFormShowing } );
+
+		if ( this.state.isCouponFormShowing ) {
+			analytics.ga.recordEvent( 'Upgrades', 'Clicked Hide Coupon Code Link' );
+		} else {
+			analytics.ga.recordEvent( 'Upgrades', 'Clicked Show Coupon Code Link' );
 		}
+	};
 
-		return this.renderApplyCouponUI();
-	}
+	applyCoupon = event => {
+		event.preventDefault();
 
-	get appliedCouponCode() {
-		return this.props.cart.is_coupon_applied && this.props.cart.coupon
-			? this.props.cart.coupon
-			: null;
-	}
+		analytics.tracks.recordEvent( 'calypso_checkout_coupon_submit', {
+			coupon_code: this.state.couponInputValue,
+		} );
 
-	renderAppliedCoupon() {
-		return (
-			<div className="cart__coupon">
-				<span className="cart__details">
-					{ this.props.translate( 'Coupon applied: %(coupon)s', {
-						args: { coupon: this.appliedCouponCode },
-					} ) }
-				</span>{' '}
-				<button onClick={ this.clearCoupon } className="button is-link cart__remove-link">
-					{ this.props.translate( 'Remove' ) }
-				</button>
-			</div>
-		);
-	}
+		this.setState( {
+			userChangedCoupon: false,
+			hasSubmittedCoupon: true,
+		} );
+		applyCoupon( this.state.couponInputValue );
+	};
 
-	renderApplyCouponUI() {
+	handleCouponInput = event => {
+		this.setState( {
+			userChangedCoupon: true,
+			couponInputValue: event.target.value,
+		} );
+	};
+
+	getToggleLink = () => {
 		if ( this.props.cart.total_cost === 0 ) {
 			return null;
 		}
 
+		if ( this.state.hasSubmittedCoupon ) {
+			return;
+		}
+
 		return (
-			<div className="cart__coupon">
-				<button onClick={ this.toggleCouponDetails } className="button is-link cart__toggle-link">
-					{ this.props.translate( 'Have a coupon code?' ) }
-				</button>
-
-				{ this.renderCouponForm() }
-			</div>
+			<a href="" onClick={ this.toggleCouponDetails }>
+				{ this.props.translate( 'Have a coupon code?' ) }
+			</a>
 		);
-	}
+	};
 
-	renderCouponForm = () => {
+	getCouponForm = () => {
 		if ( ! this.state.isCouponFormShowing ) {
 			return null;
 		}
 
+		if ( this.state.hasSubmittedCoupon ) {
+			return;
+		}
+
 		return (
-			<form onSubmit={ this.applyCoupon } className={ 'cart__form' }>
+			<form onSubmit={ this.applyCoupon }>
 				<input
 					type="text"
-					disabled={ this.isSubmitting }
 					placeholder={ this.props.translate( 'Enter Coupon Code', { textOnly: true } ) }
-					onChange={ this.handleCouponInputChange }
+					onChange={ this.handleCouponInput }
 					value={ this.state.couponInputValue }
-					autoFocus // eslint-disable-line jsx-a11y/no-autofocus
 				/>
-				<Button
-					type="submit"
-					disabled={ isEmpty( trim( this.state.couponInputValue ) ) }
-					busy={ this.isSubmitting }
-				>
+				<Button type="submit" disabled={ isEmpty( trim( this.state.couponInputValue ) ) }>
 					{ this.props.translate( 'Apply' ) }
 				</Button>
 			</form>
@@ -162,6 +167,7 @@ export class CartCoupon extends React.Component {
 			couponInputValue: event.target.value,
 		} );
 	};
+
 }
 
 const mapDispatchToProps = dispatch => ( {
