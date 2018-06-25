@@ -216,7 +216,7 @@ export const getCountriesData = ( state, orderId, siteId = getSelectedSiteId( st
 	};
 };
 
-const getAddressErrors = ( addressData, countriesData ) => {
+const getAddressErrors = ( addressData, reduxState, siteId ) => {
 	const {
 		values,
 		isNormalized,
@@ -225,7 +225,6 @@ const getAddressErrors = ( addressData, countriesData ) => {
 		ignoreValidation,
 		fieldErrors,
 	} = addressData;
-
 	if ( ( isNormalized || isUnverifiable ) && ! normalizedValues && fieldErrors ) {
 		return fieldErrors;
 	} else if ( isNormalized && ! normalizedValues ) {
@@ -245,17 +244,15 @@ const getAddressErrors = ( addressData, countriesData ) => {
 		}
 	} );
 
-	if ( countriesData[ country ] ) {
-		if (
-			includes( ACCEPTED_USPS_ORIGIN_COUNTRY_CODES, country ) &&
-			! /^\d{5}(?:-\d{4})?$/.test( postcode )
-		) {
-			errors.postcode = translate( 'Invalid ZIP code format' );
-		}
+	if (
+		includes( ACCEPTED_USPS_ORIGIN_COUNTRY_CODES, country ) &&
+		! /^\d{5}(?:-\d{4})?$/.test( postcode )
+	) {
+		errors.postcode = translate( 'Invalid ZIP code format' );
+	}
 
-		if ( ! isEmpty( countriesData[ country ].states ) && ! state ) {
-			errors.state = translate( 'This field is required' );
-		}
+	if ( ! state && hasStates( reduxState, country, siteId ) ) {
+		errors.state = translate( 'This field is required' );
 	}
 
 	if ( ignoreValidation ) {
@@ -422,18 +419,15 @@ export const getFormErrors = createSelector(
 		}
 
 		const shippingLabel = getShippingLabel( state, orderId, siteId );
-		const { countriesData } = shippingLabel.storeOptions;
 		const { form, paperSize } = shippingLabel;
 		if ( isEmpty( form ) ) {
 			return {};
 		}
 		const destinationCountryCode = form.destination.values.country;
-		const destinationCountryName = getCountriesData( state, orderId, siteId )[
-			destinationCountryCode
-		];
+		const destinationCountryName = getCountryName( state, destinationCountryCode, siteId );
 		return {
-			origin: getAddressErrors( form.origin, countriesData ),
-			destination: getAddressErrors( form.destination, countriesData ),
+			origin: getAddressErrors( form.origin, state, siteId ),
+			destination: getAddressErrors( form.destination, state, siteId ),
 			packages: getPackagesErrors( form.packages.selected ),
 			customs: getCustomsErrors(
 				form.packages.selected,
