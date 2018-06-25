@@ -543,7 +543,7 @@ export const getAllCountryNames = createSelector(
 		countries.forEach( ( { code, name } ) => ( names[ code ] = name ) );
 		return names;
 	},
-	_getSelectorDependants
+	_getSelectorDependants( 0 )
 );
 
 /**
@@ -558,7 +558,7 @@ export const getOriginCountryNames = createSelector(
 			? pick( allNames, ACCEPTED_USPS_ORIGIN_COUNTRY_CODES )
 			: pick( allNames, DOMESTIC_US_TERRITORIES );
 	},
-	_getSelectorDependants
+	_getSelectorDependants( 0 )
 );
 
 /**
@@ -573,7 +573,7 @@ export const getDestinationCountryNames = createSelector(
 			? allNames
 			: pick( allNames, DOMESTIC_US_TERRITORIES );
 	},
-	_getSelectorDependants
+	_getSelectorDependants( 0 )
 );
 
 /**
@@ -602,7 +602,7 @@ export const getStateNames = createSelector(
 		}
 		return names;
 	},
-	_getSelectorDependants
+	_getSelectorDependants( 1 )
 );
 
 export const areLabelsFullyLoaded = ( state, orderId, siteId = getSelectedSiteId( state ) ) => {
