@@ -42,6 +42,7 @@ import { isEnabled } from 'config';
 import { ACCEPTED_USPS_ORIGIN_COUNTRY_CODES } from './constants';
 import {
 	areLocationsLoaded,
+	areLocationsErrored,
 	getCountryName,
 	_getSelectorDependants,
 	getAllCountries,
@@ -613,7 +614,7 @@ export const isLabelDataFetchError = ( state, orderId, siteId = getSelectedSiteI
 	return (
 		isError( state, orderId, siteId ) ||
 		areSettingsErrored( state, siteId ) ||
-		arePackagesErrored( state, siteId )
-		// TODO: Handle locations fetch error
+		arePackagesErrored( state, siteId ) ||
+		areLocationsErrored( state, siteId )
 	);
 };
