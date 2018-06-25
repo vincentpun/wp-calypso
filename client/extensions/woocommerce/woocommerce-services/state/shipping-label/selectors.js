@@ -206,26 +206,6 @@ export const getProductValueFromOrder = createSelector(
 	]
 );
 
-export const getCountriesData = ( state, orderId, siteId = getSelectedSiteId( state ) ) => {
-	if ( ! isLoaded( state, orderId, siteId ) ) {
-		return null;
-	}
-
-	const shippingLabel = getShippingLabel( state, orderId, siteId );
-	const { countriesData } = shippingLabel.storeOptions;
-	if ( isEnabled( 'woocommerce/extension-wcservices/international-labels' ) || ! countriesData ) {
-		return countriesData;
-	}
-
-	return {
-		...pick( countriesData, [ 'PR', 'VI' ] ),
-		US: {
-			...countriesData.US,
-			states: omit( countriesData.US.states, [ 'AA', 'AE', 'AP' ] ), // Exclude military addresses
-		},
-	};
-};
-
 const getAddressErrors = (
 	{
 		values,
@@ -555,7 +535,7 @@ export const getAllCountryNames = createSelector(
 	( state, siteId = getSelectedSiteId( state ) ) => {
 		const countries = getAllCountries( state, siteId );
 		const names = {};
-		countries.forEach( ( { code, name } ) => names[ code ] = name );
+		countries.forEach( ( { code, name } ) => ( names[ code ] = name ) );
 		return names;
 	},
 	_getSelectorDependants
@@ -606,9 +586,12 @@ export const getStateNames = createSelector(
 		}
 		const states = getStates( state, countryCode, siteId );
 		const names = {};
-		states.forEach( ( { code, name } ) => names[ code ] = name );
+		states.forEach( ( { code, name } ) => ( names[ code ] = name ) );
 
-		if ( 'US' === countryCode && ! isEnabled( 'woocommerce/extension-wcservices/international-labels' ) ) {
+		if (
+			'US' === countryCode &&
+			! isEnabled( 'woocommerce/extension-wcservices/international-labels' )
+		) {
 			// Filter out military addresses
 			return omit( names, [ 'AA', 'AE', 'AP' ] );
 		}
