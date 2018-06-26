@@ -8212,9 +8212,9 @@
       "integrity": "sha1-3BXKHGcjh8p2vTesCjlbogQqLCg="
     },
     "get-video-id": {
-      "version": "2.1.7",
-      "resolved": "https://registry.npmjs.org/get-video-id/-/get-video-id-2.1.7.tgz",
-      "integrity": "sha512-uGZbADzdLQgmxFJmYT0tbn63k2gPHDEFos7k/WToE44Wm5NLq9ucZ7FxKFFAJghkuxxJ1lbtGmEKNEKwaMLQkQ==",
+      "version": "3.1.0",
+      "resolved": "https://registry.npmjs.org/get-video-id/-/get-video-id-3.1.0.tgz",
+      "integrity": "sha512-dWjLwCBtvGB8aP5S91Vs5W01dTaEykY43whz+wSS9G0zkuTmh7FZ1rZ4A5M33vf/8vvHPlMhLreUSdEJ4yW7Dw==",
       "requires": {
         "get-src": "^1.0.1"
       }
@@ -13910,9 +13910,9 @@
       "integrity": "sha1-y8ec26+P1CKOE/Yh8rGiN8GyB7M="
     },
     "page": {
-      "version": "1.6.4",
-      "resolved": "https://registry.npmjs.org/page/-/page-1.6.4.tgz",
-      "integrity": "sha1-+3QTJXJH2eBPArFvE4H2two3v1o=",
+      "version": "1.8.6",
+      "resolved": "https://registry.npmjs.org/page/-/page-1.8.6.tgz",
+      "integrity": "sha512-AMF34NihxNZkWtJBUr06EwlydSfeJxVnA057jpxqcie8LVCV+m1XToEzNw2R9e3bBJkZqWvwWgdIJ9QjUUWwFw==",
       "requires": {
         "path-to-regexp": "~1.2.1"
       },
