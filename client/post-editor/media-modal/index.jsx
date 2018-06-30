@@ -153,6 +153,10 @@ export class EditorMediaModal extends Component {
 			filter: '',
 			detailSelectedIndex: 0,
 			source: props.source ? props.source : '',
+			dateRange: {
+				from: props.moment(),
+				to: props.moment(),
+			},
 			gallerySettings: props.initialGallerySettings,
 		};
 	}
@@ -431,6 +435,15 @@ export class EditorMediaModal extends Component {
 		this.setState( { source, search: undefined } );
 	};
 
+	onDateChange = ( startDate, endDate ) => {
+		this.setState( {
+			dateRange: {
+				from: startDate,
+				to: endDate,
+			},
+		} );
+	};
+
 	onClose = () => {
 		this.props.onClose();
 	};
@@ -606,11 +619,13 @@ export class EditorMediaModal extends Component {
 						enabledFilters={ this.props.enabledFilters }
 						search={ this.state.search }
 						source={ this.state.source }
+						dateRange={ this.state.dateRange }
 						onAddMedia={ this.onAddMedia }
 						onAddAndEditImage={ this.onAddAndEditImage }
 						onFilterChange={ this.onFilterChange }
 						onScaleChange={ this.onScaleChange }
 						onSourceChange={ this.onSourceChange }
+						onDateChange={ this.onDateChange }
 						onSearch={ this.onSearch }
 						onEditItem={ this.editItem }
 						fullScreenDropZone={ false }
