@@ -14,6 +14,7 @@ import { find, get, includes, isEmpty } from 'lodash';
  * Internal dependencies
  */
 import ActivityLogBanner from 'my-sites/stats/activity-log-banner';
+import ActivityLogSearch from 'my-sites/stats/activity-log-search';
 import ActivityLogItem from '../activity-log-item';
 import ActivityLogSwitch from '../activity-log-switch';
 import ActivityLogTasklist from '../activity-log-tasklist';
@@ -61,6 +62,7 @@ import getRewindState from 'state/selectors/get-rewind-state';
 import getSiteGmtOffset from 'state/selectors/get-site-gmt-offset';
 import getSiteTimezoneValue from 'state/selectors/get-site-timezone-value';
 import { requestActivityLogs } from 'state/data-getters';
+import getActivityLogRequestFreshness from 'state/selectors/get-activity-log-request-freshness';
 
 const PAGE_SIZE = 20;
 
@@ -305,6 +307,7 @@ class ActivityLog extends Component {
 	getActivityLog() {
 		const {
 			enableRewind,
+			filter,
 			filter: { page: requestedPage },
 			logs,
 			logLoadingState,
@@ -414,6 +417,7 @@ class ActivityLog extends Component {
 					noLogsContent
 				) : (
 					<div>
+						<ActivityLogSearch filter={ filter } siteId={ siteId } />
 						<section className="activity-log__wrapper">
 							{ theseLogs.map( log => (
 								<Fragment key={ log.activityId }>
@@ -494,7 +498,8 @@ export default connect(
 		const rewindState = getRewindState( state, siteId );
 		const restoreStatus = rewindState.rewind && rewindState.rewind.status;
 		const filter = getActivityLogFilter( state, siteId );
-		const logs = siteId && requestActivityLogs( siteId, filter );
+		const freshness = getActivityLogRequestFreshness( state, siteId );
+		const logs = siteId && requestActivityLogs( siteId, filter, { freshness } );
 		const siteIsOnFreePlan = isFreePlan( get( getCurrentPlan( state, siteId ), 'productSlug' ) );
 
 		return {

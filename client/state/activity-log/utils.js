@@ -1,5 +1,10 @@
 /** @format */
 
+/**
+ * External dependencies
+ */
+import { toPairs, omit, isArray, isEqual } from 'lodash';
+
 export const filterStateToApiQuery = filter =>
 	Object.assign(
 		{},
@@ -60,3 +65,32 @@ export const queryToFilterState = query => {
 		page && page > 0 && { page }
 	);
 };
+
+export const filterStateToTokens = filter => {
+	const query = filterStateToApiQuery( filter ),
+		tokens = [];
+	toPairs( omit( query, 'number' ) ).forEach( pair => {
+		isArray( pair[ 1 ] )
+			? pair[ 1 ].forEach( value => {
+					tokens.push( pair[ 0 ] + ':' + value );
+			  } )
+			: tokens.push( pair[ 0 ] + ':' + pair[ 1 ] );
+	} );
+	return tokens;
+};
+
+export const tokensToFilterState = tokens => {
+	const query = {};
+	tokens.forEach( token => {
+		const pair = token.split( ':' );
+		if ( pair[ 1 ] ) {
+			query[ pair[ 0 ] ]
+				? query[ pair[ 0 ] ].push( pair[ 1 ] )
+				: ( query[ pair[ 0 ] ] = [ pair[ 1 ] ] );
+		}
+	} );
+	return queryToFilterState( query );
+};
+
+export const needsFetching = ( query, state ) =>
+	! isEqual( omit( query, 'page' ), omit( state, 'page' ) );

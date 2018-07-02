@@ -11,6 +11,7 @@ import { backupRequest, backupProgress } from './backup/reducer';
 export const emptyFilter = {
 	page: 1,
 };
+export const defaultRequestFreshness = 5 * 60 * 1000;
 
 export const filterState = ( state = emptyFilter, { type, filter } ) => {
 	switch ( type ) {
@@ -25,9 +26,23 @@ export const filterState = ( state = emptyFilter, { type, filter } ) => {
 	}
 };
 
+export const requestFreshness = ( state = defaultRequestFreshness, { type } ) => {
+	switch ( type ) {
+		case ACTIVITY_LOG_FILTER_SET:
+			return 100;
+
+		case ACTIVITY_LOG_FILTER_UPDATE:
+			return defaultRequestFreshness;
+
+		default:
+			return state;
+	}
+};
+
 export default combineReducers( {
 	activationRequesting,
 	filter: keyedReducer( 'siteId', filterState ),
+	requestFreshness: keyedReducer( 'siteId', requestFreshness ),
 	restoreProgress,
 	restoreRequest,
 	backupProgress,
