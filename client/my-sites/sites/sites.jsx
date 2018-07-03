@@ -41,12 +41,6 @@ export const Sites = createReactClass( {
 			path = '/sites';
 		}
 
-		// Filters sites based on public or private nature
-		// for paths `/public` and `/private` only
-		if ( path === '/sites/private' ) {
-			return site.is_private;
-		}
-
 		// Filter out jetpack sites when on particular routes
 		if ( /^\/customize/.test( path ) ) {
 			return ! site.jetpack;
@@ -78,6 +72,9 @@ export const Sites = createReactClass( {
 		switch ( path ) {
 			case 'stats':
 				path = i18n.translate( 'Insights' );
+				if ( '/stats/activity' === this.props.path ) {
+					path = i18n.translate( 'Activity' );
+				}
 				break;
 			case 'plans':
 				path = i18n.translate( 'Plans' );
