@@ -6,7 +6,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { localize } from 'i18n-calypso';
-import { map, toPairs, pick, flowRight, filter, head } from 'lodash';
+import { map, toPairs, pick, flowRight } from 'lodash';
 import classNames from 'classnames';
 
 /**
@@ -14,7 +14,6 @@ import classNames from 'classnames';
  */
 import Button from 'components/button';
 import Card from 'components/card';
-import ClipboardButtonInput from 'components/clipboard-button-input';
 import DocumentHead from 'components/data/document-head';
 import FormFieldset from 'components/forms/form-fieldset';
 import FormInput from 'components/forms/form-text-input';
@@ -24,9 +23,12 @@ import FormSettingExplanation from 'components/forms/form-setting-explanation';
 import FormSelect from 'components/forms/form-select';
 import FormTextarea from 'components/forms/form-textarea';
 import HeaderCake from 'components/header-cake';
+import scrollTo from 'lib/scroll-to';
+import Notice from 'components/notice';
 import QueryTerms from 'components/data/query-terms';
 import TermTreeSelector from 'blocks/term-tree-selector';
 import PodcastCoverImageSetting from 'my-sites/site-settings/podcast-cover-image-setting';
+import PodcastFeedUrl from './feed-url';
 import PodcastingPrivateSiteMessage from './private-site';
 import PodcastingNoPermissionsMessage from './no-permissions';
 import PodcastingNotSupportedMessage from './not-supported';
@@ -37,10 +39,8 @@ import isPrivateSite from 'state/selectors/is-private-site';
 import canCurrentUser from 'state/selectors/can-current-user';
 import isSiteAutomatedTransfer from 'state/selectors/is-site-automated-transfer';
 import { isJetpackSite } from 'state/sites/selectors';
-import {
-	isRequestingTermsForQueryIgnoringPage,
-	getTermsForQueryIgnoringPage,
-} from 'state/terms/selectors';
+import { isRequestingTermsForQueryIgnoringPage, getTerm } from 'state/terms/selectors';
+import { isSavingSiteSettings } from 'state/site-settings/selectors';
 
 class PodcastingDetails extends Component {
 	renderExplicitContent() {
@@ -85,6 +85,7 @@ class PodcastingDetails extends Component {
 				primary={ true }
 				type="submit"
 				disabled={ isRequestingSettings || isSavingSettings || isRequestingCategories }
+				busy={ isSavingSettings }
 			>
 				{ isSavingSettings ? translate( 'Saving…' ) : translate( 'Save Settings' ) }
 			</Button>
@@ -161,24 +162,24 @@ class PodcastingDetails extends Component {
 	}
 
 	renderFeedUrl() {
-		const { podcastingFeedUrl, translate } = this.props;
+		const { podcastingFeedUrl } = this.props;
 
 		if ( ! podcastingFeedUrl ) {
 			return;
 		}
 
-		return (
-			<FormFieldset>
-				<ClipboardButtonInput value={ podcastingFeedUrl } />
-				<FormSettingExplanation>
-					{ translate( 'Copy your feed URL and submit it to Apple Podcasts or another service.' ) }
-				</FormSettingExplanation>
-			</FormFieldset>
-		);
+		return <PodcastFeedUrl feedUrl={ podcastingFeedUrl } />;
 	}
 
 	render() {
-		const { handleSubmitForm, siteSlug, siteId, translate, isPodcastingEnabled } = this.props;
+		const {
+			handleSubmitForm,
+			siteSlug,
+			siteId,
+			translate,
+			isPodcastingEnabled,
+			isSavingSettings,
+		} = this.props;
 		if ( ! siteId ) {
 			return null;
 		}
@@ -212,7 +213,7 @@ class PodcastingDetails extends Component {
 					<Card className={ classes }>{ error || this.renderSettings() }</Card>
 					{ isPodcastingEnabled && (
 						<div className="podcasting-details__disable-podcasting">
-							<Button onClick={ this.onCategoryCleared } scary>
+							<Button onClick={ this.onCategoryCleared } scary busy={ isSavingSettings }>
 								{ translate( 'Disable Podcast' ) }
 							</Button>
 							<p>
@@ -228,7 +229,13 @@ class PodcastingDetails extends Component {
 	}
 
 	renderCategorySetting() {
-		const { siteId, podcastingCategoryId, translate } = this.props;
+		const {
+			siteId,
+			podcastingCategoryId,
+			podcastingFeedUrl,
+			isCategoryChanging,
+			translate,
+		} = this.props;
 
 		return (
 			<Fragment>
@@ -249,8 +256,17 @@ class PodcastingDetails extends Component {
 						onAddTermSuccess={ this.onCategorySelected }
 						height={ 200 }
 					/>
+					{ isCategoryChanging && (
+						<Notice
+							isCompact
+							status="is-info"
+							text={ translate(
+								"If you change categories, you'll need to resubmit your feed to Apple Podcasts and any other podcasting services."
+							) }
+						/>
+					) }
 				</FormFieldset>
-				{ this.renderFeedUrl() }
+				{ podcastingFeedUrl && <PodcastFeedUrl feedUrl={ podcastingFeedUrl } /> }
 			</Fragment>
 		);
 	}
@@ -349,7 +365,12 @@ class PodcastingDetails extends Component {
 	};
 
 	onCategoryCleared = () => {
-		this.props.updateFields( { podcasting_category_id: '0' } );
+		const { updateFields, submitForm } = this.props;
+
+		updateFields( { podcasting_category_id: '0' }, () => {
+			submitForm();
+			scrollTo( { y: 0 } );
+		} );
 	};
 
 	onCoverImageRemoved = () => {
@@ -397,9 +418,17 @@ const connectComponent = connect( ( state, ownProps ) => {
 		Number( ownProps.fields.podcasting_category_id );
 	const isPodcastingEnabled = podcastingCategoryId > 0;
 
-	const categories = getTermsForQueryIgnoringPage( state, siteId, 'category', {} );
-	const selectedCategory = categories && head( filter( categories, { ID: podcastingCategoryId } ) );
+	const selectedCategory =
+		isPodcastingEnabled && getTerm( state, siteId, 'category', podcastingCategoryId );
 	const podcastingFeedUrl = selectedCategory && selectedCategory.feed_url;
+
+	const isSavingSettings = isSavingSiteSettings( state, siteId );
+	const isCategoryChanging =
+		! isSavingSettings &&
+		! ownProps.isRequestingSettings &&
+		ownProps.settings &&
+		Number( ownProps.settings.podcasting_category_id ) > 0 &&
+		podcastingCategoryId !== Number( ownProps.settings.podcasting_category_id );
 
 	const isJetpack = isJetpackSite( state, siteId );
 	const isAutomatedTransfer = isSiteAutomatedTransfer( state, siteId );
@@ -410,10 +439,12 @@ const connectComponent = connect( ( state, ownProps ) => {
 		isPrivate: isPrivateSite( state, siteId ),
 		podcastingCategoryId,
 		isPodcastingEnabled,
+		isCategoryChanging,
 		isRequestingCategories: isRequestingTermsForQueryIgnoringPage( state, siteId, 'category', {} ),
 		podcastingFeedUrl,
 		userCanManagePodcasting: canCurrentUser( state, siteId, 'manage_options' ),
 		isUnsupportedSite: isJetpack && ! isAutomatedTransfer,
+		isSavingSettings,
 	};
 } );
 

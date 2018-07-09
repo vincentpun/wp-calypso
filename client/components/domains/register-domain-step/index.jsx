@@ -74,6 +74,7 @@ import {
 	recordSearchResultsReceive,
 	recordShowMoreResults,
 	recordTransferDomainButtonClick,
+	recordUseYourDomainButtonClick,
 } from 'components/domains/register-domain-step/analytics';
 import Spinner from 'components/spinner';
 
@@ -90,6 +91,7 @@ const PAGE_SIZE = 10;
 const MAX_PAGES = 3;
 const SUGGESTION_QUANTITY = isPaginationEnabled ? PAGE_SIZE * MAX_PAGES : PAGE_SIZE;
 
+const FEATURED_SUGGESTIONS_AT_TOP = [ 'group_7', 'group_8' ];
 let searchVendor = 'domainsbot';
 
 let searchQueue = [];
@@ -613,8 +615,8 @@ class RegisterDomainStep extends React.Component {
 		);
 	};
 
-	getAvailableTlds = ( domain = undefined ) => {
-		return getAvailableTlds( domain ? { search: domain } : {} )
+	getAvailableTlds = ( domain = undefined, vendor = undefined ) => {
+		return getAvailableTlds( { vendor, search: domain } )
 			.then( availableTlds => {
 				this.setState( { availableTlds } );
 			} )
@@ -770,7 +772,8 @@ class RegisterDomainStep extends React.Component {
 		const markedSuggestions = markFeaturedSuggestions(
 			suggestions,
 			this.state.exactMatchDomain,
-			getStrippedDomainBase( domain )
+			getStrippedDomainBase( domain ),
+			includes( FEATURED_SUGGESTIONS_AT_TOP, searchVendor )
 		);
 
 		this.setState(
@@ -867,7 +870,7 @@ class RegisterDomainStep extends React.Component {
 		}
 
 		if ( this.props.isSignupStep ) {
-			searchVendor = abtest( 'domainSuggestionKrakenV321' );
+			searchVendor = abtest( 'domainSuggestionKrakenV322' );
 		}
 
 		enqueueSearchStatReport( { query: searchQuery, section: this.props.analyticsSection } );
@@ -879,7 +882,7 @@ class RegisterDomainStep extends React.Component {
 
 		const timestamp = Date.now();
 
-		this.getAvailableTlds( domain );
+		this.getAvailableTlds( domain, searchVendor );
 		const domainSuggestions = Promise.all( [
 			this.checkDomainAvailability( domain, timestamp ),
 			this.getDomainsSuggestions( domain, timestamp ),
@@ -944,7 +947,7 @@ class RegisterDomainStep extends React.Component {
 
 			domainUnavailableSuggestion = (
 				<DomainTransferSuggestion
-					onButtonClick={ this.goToTransferDomainStep }
+					onButtonClick={ this.goToUseYourDomainStep }
 					tracksButtonClickSource="initial-suggestions-bottom"
 				/>
 			);
@@ -965,7 +968,7 @@ class RegisterDomainStep extends React.Component {
 		return (
 			<ExampleDomainSuggestions
 				onClickExampleSuggestion={ this.handleClickExampleSuggestion }
-				url={ this.getTransferDomainUrl() }
+				url={ this.getUseYourDomainUrl() }
 				path={ this.props.path }
 				domainsWithPlansOnly={ this.props.domainsWithPlansOnly }
 				products={ this.props.products }
@@ -1015,6 +1018,7 @@ class RegisterDomainStep extends React.Component {
 				onClickMapping={ this.goToMapDomainStep }
 				onAddTransfer={ this.props.onAddTransfer }
 				onClickTransfer={ this.goToTransferDomainStep }
+				onClickUseYourDomain={ this.goToUseYourDomainStep }
 				tracksButtonClickSource="exact-match-top"
 				suggestions={ suggestions }
 				isLoadingSuggestions={ this.state.loadingResults }
@@ -1075,6 +1079,22 @@ class RegisterDomainStep extends React.Component {
 		return transferDomainUrl;
 	}
 
+	getUseYourDomainUrl() {
+		let useYourDomainUrl;
+
+		if ( this.props.useYourDomainUrl ) {
+			useYourDomainUrl = this.props.useYourDomainUrl;
+		} else {
+			const query = stringify( { initialQuery: this.state.lastQuery.trim() } );
+			useYourDomainUrl = `${ this.props.basePath }/use-your-domain`;
+			if ( this.props.selectedSite ) {
+				useYourDomainUrl += `/${ this.props.selectedSite.slug }?${ query }`;
+			}
+		}
+
+		return useYourDomainUrl;
+	}
+
 	goToMapDomainStep = event => {
 		event.preventDefault();
 
@@ -1091,6 +1111,14 @@ class RegisterDomainStep extends React.Component {
 		this.props.recordTransferDomainButtonClick( this.props.analyticsSection, source );
 
 		page( this.getTransferDomainUrl() );
+	};
+
+	goToUseYourDomainStep = event => {
+		event.preventDefault();
+
+		this.props.recordUseYourDomainButtonClick( this.props.analyticsSection );
+
+		page( this.getUseYourDomainUrl() );
 	};
 
 	showValidationErrorMessage( domain, error, errorData ) {
@@ -1121,5 +1149,6 @@ export default connect(
 		recordSearchResultsReceive,
 		recordShowMoreResults,
 		recordTransferDomainButtonClick,
+		recordUseYourDomainButtonClick,
 	}
 )( localize( RegisterDomainStep ) );

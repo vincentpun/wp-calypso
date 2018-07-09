@@ -81,13 +81,16 @@ export default {
 		},
 		defaultVariation: 'original',
 	},
-	domainSuggestionKrakenV321: {
-		datestamp: '20180524',
+	domainSuggestionKrakenV322: {
+		datestamp: '20180709',
 		variations: {
 			domainsbot: 0,
-			group_1: 10000,
-			group_3: 10000,
-			group_4: 10000,
+			group_1: 27200,
+			group_3: 27200,
+			group_4: 27200,
+			group_6: 1000,
+			group_7: 1000,
+			group_8: 27200,
 		},
 		defaultVariation: 'domainsbot',
 	},
@@ -106,5 +109,13 @@ export default {
 			cartAwaitingPayment: 50,
 		},
 		defaultVariation: 'siteDeservesBoost',
+	},
+	aboutSuggestionMatches: {
+		datestamp: '20180704',
+		variations: {
+			control: 50,
+			enhancedSort: 50,
+		},
+		defaultVariation: 'control',
 	},
 };
