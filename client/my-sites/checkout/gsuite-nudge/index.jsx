@@ -20,7 +20,6 @@ import { getSiteSlug, getSiteTitle } from 'state/sites/selectors';
 import { addItem, removeItem } from 'lib/upgrades/actions';
 import { cartItems } from 'lib/cart-values';
 import { isDotComPlan } from 'lib/products-values';
-import { getABTestVariation } from 'lib/abtest';
 import PageViewTracker from 'lib/analytics/page-view-tracker';
 
 export class GsuiteNudge extends React.Component {
@@ -31,14 +30,9 @@ export class GsuiteNudge extends React.Component {
 	};
 
 	handleClickSkip = () => {
-		const { siteSlug, receiptId } = this.props;
+		const { siteSlug } = this.props;
 
-		// DO NOT assign the test here.
-		if ( 'show' === getABTestVariation( 'checklistThankYouForPaidUser' ) ) {
-			page( `/checklist/${ siteSlug }?d=paid` );
-		} else {
-			page( `/checkout/thank-you/${ siteSlug }/${ receiptId }` );
-		}
+		page( `/checklist/${ siteSlug }?d=paid` );
 	};
 
 	handleAddGoogleApps = googleAppsCartItem => {
