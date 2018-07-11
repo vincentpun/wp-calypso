@@ -153,7 +153,7 @@ class StatsSite extends Component {
 					slug={ slug }
 				/>
 				<div id="my-stats-content">
-					{ config.isEnabled( 'onboarding-checklist' ) && <ChecklistBanner siteId={ siteId } /> }
+					<ChecklistBanner siteId={ siteId } />
 					{ siteId && (
 						<GoogleMyBusinessStatsNudge
 							siteSlug={ slug }

@@ -11,7 +11,6 @@ import { get, some } from 'lodash';
 import { getSite } from 'state/sites/selectors';
 import { cartItems } from 'lib/cart-values';
 import { isBusiness, isJetpackPlan } from 'lib/products-values';
-import config from 'config';
 
 /**
  * @param {Object} state Global state tree
@@ -24,10 +23,6 @@ export default function isEligibleForCheckoutToChecklist( state, siteId, cart ) 
 	const designType = get( site, 'options.design_type' );
 	const createdAt = get( site, 'options.created_at' );
 	const isNewSite = createdAt && Date.now() - Date.parse( createdAt ) < 30 * 60000; // within 30 mins
-
-	if ( ! config.isEnabled( 'onboarding-checklist' ) ) {
-		return false;
-	}
 
 	return (
 		isNewSite &&
