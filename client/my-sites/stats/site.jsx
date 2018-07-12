@@ -47,7 +47,7 @@ class StatsSite extends Component {
 		};
 	}
 
-	componentWillReceiveProps( nextProps ) {
+	UNSAFE_componentWillReceiveProps( nextProps ) {
 		if ( ! this.state.tabSwitched && this.state.chartTab !== nextProps.chartTab ) {
 			this.setState( {
 				tabSwitched: true,
