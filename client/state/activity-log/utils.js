@@ -92,5 +92,5 @@ export const tokensToFilterState = tokens => {
 	return queryToFilterState( query );
 };
 
-export const needsFetching = ( query, state ) =>
+export const logsNeedRefresh = ( query, state ) =>
 	! isEqual( omit( query, 'page' ), omit( state, 'page' ) );
