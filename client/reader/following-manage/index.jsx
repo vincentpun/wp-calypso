@@ -186,6 +186,8 @@ class FollowingManage extends Component {
 		const sitesQueryWithoutProtocol = withoutHttp( sitesQuery );
 		const showFollowByUrl = this.shouldShowFollowByUrl();
 		const isFollowByUrlWithNoSearchResults = showFollowByUrl && searchResultsCount === 0;
+
+		// @todo change this to reject dismissed sites too
 		const filteredRecommendedSites = reject( recommendedSites, site =>
 			includes( blockedSites, site.blogId )
 		);
@@ -226,8 +228,12 @@ class FollowingManage extends Component {
 					{ showFollowByUrl && (
 						<div className="following-manage__url-follow">
 							<FollowButton
-								followLabel={ translate( 'Follow %s', { args: sitesQueryWithoutProtocol } ) }
-								followingLabel={ translate( 'Following %s', { args: sitesQueryWithoutProtocol } ) }
+								followLabel={ translate( 'Follow %s', {
+									args: sitesQueryWithoutProtocol,
+								} ) }
+								followingLabel={ translate( 'Following %s', {
+									args: sitesQueryWithoutProtocol,
+								} ) }
 								siteUrl={ addSchemeIfMissing( readerAliasedFollowFeedUrl, 'http' ) }
 								followSource={ READER_FOLLOWING_MANAGE_URL_INPUT }
 							/>
