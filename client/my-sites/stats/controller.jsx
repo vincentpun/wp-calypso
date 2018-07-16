@@ -235,8 +235,6 @@ export default {
 				context.pathname === filter.path ||
 				( filter.altPaths && -1 !== filter.altPaths.indexOf( context.pathname ) )
 		);
-		console.log( filters );
-		console.log( context );
 		if ( ! activeFilter ) {
 			return next();
 		}
