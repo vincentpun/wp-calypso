@@ -4,8 +4,7 @@ export default {
 		datestamp: '20180711',
 		variations: {
 			sidebarUpsells: 20,
-			themesUpsells: 20,
-			control: 60,
+			control: 80,
 		},
 		defaultVariation: 'control',
 		allowExistingUsers: true,

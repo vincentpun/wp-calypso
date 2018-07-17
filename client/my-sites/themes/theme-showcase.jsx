@@ -73,7 +73,6 @@ class ThemeShowcase extends React.Component {
 		secondaryOption: optionShape,
 		getScreenshotOption: PropTypes.func,
 		siteSlug: PropTypes.string,
-		upsellBanner: PropTypes.element,
 		trackATUploadClick: PropTypes.func,
 	};
 
@@ -81,7 +80,6 @@ class ThemeShowcase extends React.Component {
 		tier: '',
 		search: '',
 		emptyContent: null,
-		upsellBanner: false,
 		showUploadButton: true,
 	};
 
@@ -240,7 +238,6 @@ class ThemeShowcase extends React.Component {
 						showTierThemesControl={ ! isMultisite }
 						select={ this.onTierSelect }
 					/>
-					{ this.props.upsellBanner }
 					{ this.showUploadButton() && (
 						<Button
 							className="themes__upload-button"
