@@ -74,7 +74,10 @@ const babelLoader = {
 
 const webpackConfig = {
 	bail: ! isDevelopment,
-	entry: { build: [ '@babel/polyfill', path.join( __dirname, 'client', 'boot', 'app' ) ] },
+	entry: {
+		build: [ '@babel/polyfill', path.join( __dirname, 'client', 'boot', 'app' ) ],
+		login: [ '@babel/polyfill', path.join( __dirname, 'client', 'boot', 'login' ) ],
+	},
 	profile: shouldEmitStats,
 	mode: isDevelopment ? 'development' : 'production',
 	devtool: isDevelopment ? '#eval' : process.env.SOURCEMAP || false, // in production builds you can specify a source-map via env var

@@ -404,6 +404,7 @@ sections.push( {
 	secondary: false,
 	isomorphic: true,
 	css: 'login',
+	entrypoint: 'login',
 } );
 
 sections.push( {
