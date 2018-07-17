@@ -48,7 +48,7 @@ class WordAdsUpsellComponent extends Component {
 	render() {
 		const { price, currentSitePlanSlug } = this.props;
 		return (
-			<div role="main" className="main is-wide-layout feature-upsell feature-upsell-ads">
+			<div role="main" className="main is-wide-layout feature-upsell__main">
 				{ ! price && (
 					<React.Fragment>
 						<QueryPlans />
@@ -60,23 +60,23 @@ class WordAdsUpsellComponent extends Component {
 				<PageViewTracker path={ '/feature/ads/:site' } title="AdsUpsell" />
 				<DocumentHead title={ 'Ads' } />
 
-				<header className="feature-upsell-header">
-					<h1 className="feature-upsell-header__title">Start making money with this site!</h1>
-					<p className="feature-upsell-header__subtitle">
+				<header className="feature-upsell__header">
+					<h1 className="feature-upsell__header-title">Start making money with this site!</h1>
+					<p className="feature-upsell__header-subtitle">
 						Welcome to WordAds: the advertising platform where internet’s top ad suppliers bid
 						against each other to deliver their ads to your site, maximizing your revenue.
 					</p>
 				</header>
 
-				<h2 className="feature-upsell-section-header">How it works?</h2>
+				<h2 className="feature-upsell__section-header">How it works?</h2>
 
-				<div className="feature-upsell-video-container">
-					<div className="feature-upsell-placeholder feature-upsell-placeholder--cover" />
+				<div className="feature-upsell__video-container">
+					<div className="feature-upsell__placeholder feature-upsell__placeholder--cover" />
 					<iframe
 						title="How WordAds work?"
 						width="100%"
 						height="100%"
-						className="feature-upsell-video"
+						className="feature-upsell__video"
 						src="https://videopress.com/embed/kRaHRuHQ"
 						frameborder="0"
 						allowfullscreen
@@ -85,35 +85,35 @@ class WordAdsUpsellComponent extends Component {
 
 				{ this.renderCTA() }
 
-				<h2 className="feature-upsell-section-header">As simple as 1, 2, 3</h2>
+				<h2 className="feature-upsell__section-header">As simple as 1, 2, 3</h2>
 
-				<ul className="feature-upsell-section-benefits-list">
-					<li className="feature-upsell-section-benefits-list__item">
-						<div className="feature-upsell-section-benefits-list__marker">1.</div>
-						<div className="feature-upsell-section-benefits-list__item-content">
-							<div className="feature-upsell-section-benefits-list__name">Enable WordAds</div>
-							<div className="feature-upsell-section-benefits-list__description">
+				<ul className="feature-upsell__benefits-list">
+					<li className="feature-upsell__benefits-list-item">
+						<div className="feature-upsell__benefits-list-marker">1.</div>
+						<div className="feature-upsell__benefits-list-item-content">
+							<div className="feature-upsell__benefits-list-name">Enable WordAds</div>
+							<div className="feature-upsell__benefits-list-description">
 								After you upgrade, you can install WordAds on your site in just a few clicks.
 								WordAds places the ads automatically, optimizes their placement in your page layout
 								to give you the best return. No need to approve individual ads. Just turn it on and
 								WordAds does the rest.
 							</div>
 						</div>
-						<div className="feature-upsell-section-benefits-list__image-wrapper">
+						<div className="feature-upsell__benefits-list-image-wrapper">
 							<img
 								alt=""
-								className="feature-upsell-section-benefits-list__image"
+								className="feature-upsell__benefits-list-image"
 								src="https://s2.wp.com/wp-content/themes/a8c/wordads/i/wordads_turn-on-ads@2x.png"
 							/>
 						</div>
 					</li>
-					<li className="feature-upsell-section-benefits-list__item">
-						<div className="feature-upsell-section-benefits-list__marker">2.</div>
-						<div className="feature-upsell-section-benefits-list__item-content">
-							<div className="feature-upsell-section-benefits-list__name">
+					<li className="feature-upsell__benefits-list-item">
+						<div className="feature-upsell__benefits-list-marker">2.</div>
+						<div className="feature-upsell__benefits-list-item-content">
+							<div className="feature-upsell__benefits-list-name">
 								High quality Ads start to show on your site
 							</div>
-							<div className="feature-upsell-section-benefits-list__description">
+							<div className="feature-upsell__benefits-list-description">
 								We only partner with advertisers that display family-friendly ads, and our fraud
 								prevention team proactively identifies malicious ads. That means WordAds won't place
 								an advertisement that contains nudity, promotes gambling, or makes fraudulent claims
@@ -122,19 +122,19 @@ class WordAdsUpsellComponent extends Component {
 								address any questions and concerns.
 							</div>
 						</div>
-						<div className="feature-upsell-section-benefits-list__image-wrapper">
+						<div className="feature-upsell__benefits-list-image-wrapper">
 							<img
 								alt=""
-								className="feature-upsell-section-benefits-list__image"
+								className="feature-upsell__benefits-list-image"
 								src="https://s2.wp.com/wp-content/themes/a8c/wordads/i/wordads_high-quality-ads@2x.png"
 							/>
 						</div>
 					</li>
-					<li className="feature-upsell-section-benefits-list__item">
-						<div className="feature-upsell-section-benefits-list__marker">3.</div>
-						<div className="feature-upsell-section-benefits-list__item-content">
-							<div className="feature-upsell-section-benefits-list__name">Collect the payout</div>
-							<div className="feature-upsell-section-benefits-list__description">
+					<li className="feature-upsell__benefits-list-item">
+						<div className="feature-upsell__benefits-list-marker">3.</div>
+						<div className="feature-upsell__benefits-list-item-content">
+							<div className="feature-upsell__benefits-list-name">Collect the payout</div>
+							<div className="feature-upsell__benefits-list-description">
 								You’re paid when the ad is seen by a visitor, not by click. That means the more
 								visits you get, and the more each visitor uses your site, the more you’ll earn.
 								WordAds pays monthly via PayPal. Payments are sent around the last day of the
@@ -142,10 +142,10 @@ class WordAdsUpsellComponent extends Component {
 								carry over to the next month instead.
 							</div>
 						</div>
-						<div className="feature-upsell-section-benefits-list__image-wrapper">
+						<div className="feature-upsell__benefits-list-image-wrapper">
 							<img
 								alt=""
-								className="feature-upsell-section-benefits-list__image"
+								className="feature-upsell__benefits-list-image"
 								src="https://s2.wp.com/wp-content/themes/a8c/wordads/i/wordads_impressions-2017-Q3.@2x.png"
 							/>
 						</div>
@@ -154,7 +154,7 @@ class WordAdsUpsellComponent extends Component {
 
 				{ this.renderCTA() }
 
-				<h2 className="feature-upsell-section-header">Price includes also:</h2>
+				<h2 className="feature-upsell__section-header">Price includes also:</h2>
 
 				<div className="product-purchase-features-list">
 					<div className="product-purchase-features-list__item">
@@ -224,18 +224,18 @@ class WordAdsUpsellComponent extends Component {
 		const { loadingPrice } = this.props;
 
 		return (
-			<div className="feature-upsell-cta">
+			<div className="feature-upsell__cta">
 				{ loadingPrice ? (
-					<div className="feature-upsell-placeholder feature-upsell-placeholder--cta" />
+					<div className="feature-upsell__placeholder feature-upsell__placeholder--cta" />
 				) : (
 					<React.Fragment>
 						<button
 							onClick={ this.handleUpgradeButtonClick }
-							className="button is-primary feature-upsell-cta__button"
+							className="button is-primary feature-upsell__cta-button"
 						>
 							Upgrade for { this.renderPrice() } and get started
 						</button>
-						<span className="feature-upsell-cta__guarantee">30-day money back guarantee</span>
+						<span className="feature-upsell__cta-guarantee">30-day money back guarantee</span>
 					</React.Fragment>
 				) }
 			</div>

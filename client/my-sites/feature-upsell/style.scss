@@ -1,3 +1,5 @@
+$feature-upsell-break-at: '1040px';
+
 .feature-upsell__main {
 	margin-top: 48px;
 }
@@ -20,7 +22,6 @@
 	width: 100%;
 	height: 100%;
 }
-
 
 .feature-upsell__header {
 	text-align: center;
@@ -92,7 +93,7 @@
 	}
 }
 
-.feature-upsell-video-container {
+.feature-upsell__video-container {
 	max-width: 800px;
 	width: 100%;
 	position: relative;
@@ -101,7 +102,7 @@
 	margin: 0 auto;
 }
 
-.feature-upsell-video {
+.feature-upsell__video {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -114,12 +115,12 @@
 	}
 }
 
-.feature-upsell-section-benefits-list {
+.feature-upsell__benefits-list {
 	padding: 0;
 	margin: 0;
 	list-style-type: decimal;
 
-	&__item {
+	&-item {
 		width: 100%;
 		display: flex;
 		flex-flow: row;
@@ -134,7 +135,7 @@
 		}
 	}
 
-	&__item-content {
+	&-item-content {
 		order: 2;
 		width: 100%;
 		display: flex;
@@ -144,7 +145,7 @@
 		}
 	}
 
-	&__marker {
+	&-marker {
 		order: 1;
 		margin-right: 5px;
 		@include breakpoint( '<#{$feature-upsell-break-at}' ) {
@@ -152,15 +153,15 @@
 		}
 	}
 
-	&__name,
-	&__marker {
+	&-name,
+	&-marker {
 		font-size: 26px;
 		@include breakpoint( '<1280px' ) {
 			font-size: 22px;
 		}
 	}
 
-	&__description {
+	&-description {
 		font-size: 16px;
 		margin-top: 5px;
 		@include breakpoint( '<660px' ) {
@@ -168,8 +169,8 @@
 		}
 	}
 
-	&__item:nth-child( 2n ) {
-		.feature-upsell-section-benefits-list__image-wrapper {
+	&-item:nth-child( 2n ) {
+		.feature-upsell__benefits-list-image-wrapper {
 			@include breakpoint( '>#{$feature-upsell-break-at}' ) {
 				order: 0;
 				margin-left: 0;
@@ -178,7 +179,7 @@
 		}
 	}
 
-	&__image-wrapper {
+	&-image-wrapper {
 		order: 3;
 		margin-left: 30px;
 		max-width: 40%;
@@ -194,7 +195,7 @@
 		}
 	}
 
-	&__image {
+	&-image {
 		width: 100%;
 	}
 }
