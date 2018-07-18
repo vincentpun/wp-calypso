@@ -79,24 +79,86 @@ class ActivityLogSearch extends Component {
 							</div>
 						</div>
 					) }
-					<div className="activity-log-search__filters-categories">
-						<button
-							className="activity-log-search__filter"
-							onClick={ this.handleFilterClick }
-							data-filter="group"
-						>
-							<Gridicon icon="types" className="activity-log-search__filter-icon" size={ 18 } />
-							<span>{ translate( 'Activity Group' ) }</span>
-						</button>
-						<button
-							className="activity-log-search__filter"
-							onClick={ this.handleFilterClick }
-							data-filter="time"
-						>
-							<Gridicon icon="time" className="activity-log-search__filter-icon" size={ 18 } />
-							<span>{ translate( 'Time' ) }</span>
-						</button>
-					</div>
+
+					{ 'group' === this.state.activeFilter && (
+						<div className="activity-log-search__filters-groups">
+							<button>
+								<Gridicon
+									icon="posts"
+									className="activity-log-search__filter-group-icon"
+									size={ 18 }
+									data-group="post"
+								/>
+								<span>{ translate( 'Posts and Pages' ) }</span>
+							</button>
+							<button>
+								<Gridicon
+									icon="multiple-users"
+									className="activity-log-search__filter-group-icon"
+									size={ 18 }
+									data-group="user"
+								/>
+								<span>{ translate( 'Users' ) }</span>
+							</button>
+							<button>
+								<Gridicon
+									icon="comment"
+									className="activity-log-search__filter-group-icon"
+									size={ 18 }
+									data-group="comment"
+								/>
+								<span>{ translate( 'Comments' ) }</span>
+							</button>
+							<button>
+								<Gridicon
+									icon="attachment"
+									className="activity-log-search__filter-group-icon"
+									size={ 18 }
+									data-group="attachment"
+								/>
+								<span>{ translate( 'Media and Attachments' ) }</span>
+							</button>
+							<button>
+								<Gridicon
+									icon="cog"
+									className="activity-log-search__filter-group-icon"
+									size={ 18 }
+									data-group="setting"
+								/>
+								<span>{ translate( 'Settings' ) }</span>
+							</button>
+							<button>
+								<Gridicon
+									icon="cog"
+									className="activity-log-search__filter-group-icon"
+									size={ 18 }
+									data-group="term"
+								/>
+								<span>{ translate( 'Categories and Tags' ) }</span>
+							</button>
+						</div>
+					) }
+
+					{ ! this.state.activeFilter && (
+						<div className="activity-log-search__filters-categories">
+							<button
+								className="activity-log-search__filter"
+								onClick={ this.handleFilterClick }
+								data-filter="group"
+							>
+								<Gridicon icon="types" className="activity-log-search__filter-icon" size={ 18 } />
+								<span>{ translate( 'Activity Group' ) }</span>
+							</button>
+							<button
+								className="activity-log-search__filter"
+								onClick={ this.handleFilterClick }
+								data-filter="time"
+							>
+								<Gridicon icon="time" className="activity-log-search__filter-icon" size={ 18 } />
+								<span>{ translate( 'Time' ) }</span>
+							</button>
+						</div>
+					) }
 				</div>
 			</section>
 		);
