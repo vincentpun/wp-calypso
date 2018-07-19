@@ -5295,9 +5295,9 @@
       }
     },
     "core-js": {
-      "version": "1.2.7",
-      "resolved": "https://registry.npmjs.org/core-js/-/core-js-1.2.7.tgz",
-      "integrity": "sha1-ZSKUwUZR2yj6k70tX/KYOk8IxjY="
+      "version": "2.5.7",
+      "resolved": "https://registry.npmjs.org/core-js/-/core-js-2.5.7.tgz",
+      "integrity": "sha512-RszJCAxg/PP6uzXVXL6BsxSXx/B05oJAQ2vkJRjyjrEcNVycaqOmNb5OTxZPE3xa5gwZduqza6L9JOCenh/Ecw=="
     },
     "core-util-is": {
       "version": "1.0.2",
@@ -7621,6 +7621,13 @@
         "promise": "^7.1.1",
         "setimmediate": "^1.0.5",
         "ua-parser-js": "^0.7.18"
+      },
+      "dependencies": {
+        "core-js": {
+          "version": "1.2.7",
+          "resolved": "https://registry.npmjs.org/core-js/-/core-js-1.2.7.tgz",
+          "integrity": "sha1-ZSKUwUZR2yj6k70tX/KYOk8IxjY="
+        }
       }
     },
     "figures": {
@@ -11140,6 +11147,13 @@
             "promise": "^7.0.3",
             "ua-parser-js": "^0.7.9",
             "whatwg-fetch": "^0.9.0"
+          },
+          "dependencies": {
+            "core-js": {
+              "version": "1.2.7",
+              "resolved": "https://registry.npmjs.org/core-js/-/core-js-1.2.7.tgz",
+              "integrity": "sha1-ZSKUwUZR2yj6k70tX/KYOk8IxjY="
+            }
           }
         },
         "immutable": {
