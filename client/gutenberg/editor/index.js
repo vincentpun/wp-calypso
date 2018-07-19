@@ -11,6 +11,7 @@ import { siteSelection, sites } from 'my-sites/controller';
 import { post } from './controller';
 import config from 'config';
 import { makeLayout, render as clientRender } from 'controller';
+import { registerStore, dispatch } from '@wordpress/data';
 
 export default function() {
 	if ( config.isEnabled( 'gutenberg' ) ) {
