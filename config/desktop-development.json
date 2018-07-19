@@ -124,6 +124,7 @@
 		"press-this": true,
 		"privacy-policy": true,
 		"publicize-preview": true,
+		"publicize/disable-facebook-profile": false,
 		"push-notifications": true,
 		"reader": true,
 		"reader/conversations": true,

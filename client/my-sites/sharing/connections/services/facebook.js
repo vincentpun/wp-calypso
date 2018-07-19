@@ -7,6 +7,7 @@
 /**
  * Internal dependencies
  */
+import config from 'config';
 import { SharingService, connectFor } from 'my-sites/sharing/connections/service';
 
 export class Facebook extends SharingService {
@@ -19,7 +20,10 @@ export class Facebook extends SharingService {
 	};
 
 	didKeyringConnectionSucceed( availableExternalAccounts ) {
-		if ( availableExternalAccounts.length === 0 ) {
+		if (
+			config.isEnabled( 'publicize/disable-facebook-profile' ) &&
+			availableExternalAccounts.length === 0
+		) {
 			this.props.failCreateConnection( {
 				message: this.props.translate(
 					'The %(service)s connection could not be made because this account does not have access to any Pages.',

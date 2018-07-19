@@ -87,6 +87,7 @@
 		"post-editor/media-advanced": true,
 		"press-this": true,
 		"publicize-preview": true,
+		"publicize/disable-facebook-profile": false,
 		"reader": true,
 		"reader/following-intro": true,
 		"reader/full-errors": true,

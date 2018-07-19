@@ -9,6 +9,7 @@ import { some } from 'lodash';
 /**
  * Internal dependencies
  */
+import config from 'config';
 import { getCurrentUserId } from 'state/current-user/selectors';
 import { getSelectedSiteId } from 'state/ui/selectors';
 import { getKeyringConnectionsByName } from './keyring/selectors';
@@ -44,7 +45,10 @@ export function getAvailableExternalAccounts( state, serviceName ) {
 	// Iterate over Keyring connections for this service and generate a
 	// flattened array of all accounts, including external users
 	return getKeyringConnectionsByName( state, serviceName ).reduce( ( memo, keyringConnection ) => {
-		if ( ! service.external_users_only ) {
+		if (
+			! config.isEnabled( 'publicize/disable-facebook-profile' ) ||
+			! service.external_users_only
+		) {
 			memo = memo.concat( [
 				{
 					ID: keyringConnection.external_ID,

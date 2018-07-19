@@ -91,6 +91,7 @@
 		"post-editor/html-toolbar": true,
 		"post-editor/image-editor": true,
 		"publicize-preview": true,
+		"publicize/disable-facebook-profile": false,
 		"press-this": true,
 		"preview-layout": true,
 		"privacy-policy": true,

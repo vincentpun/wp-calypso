@@ -118,6 +118,7 @@
 		"preview-layout": true,
 		"privacy-policy": true,
 		"publicize-preview": true,
+		"publicize/disable-facebook-profile": false,
 		"reader": true,
 		"reader/conversations": true,
 		"reader/following-intro": true,

@@ -87,6 +87,7 @@
 		"post-editor/image-editor": true,
 		"press-this": false,
 		"preview-layout": true,
+		"publicize/disable-facebook-profile": false,
 		"reader": true,
 		"reader/following-intro": true,
 		"reader/full-errors": false,
